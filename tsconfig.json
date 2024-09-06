@@ -5,7 +5,7 @@
         "jsx": "react-jsx",
         "declaration": true, // Generate TypeScript declaration files
         "declarationDir": "./dist/types", // Where to output the declarations
-        "emitDeclarationOnly": true, // Only emit .d.ts files, not JavaScript
+        // "emitDeclarationOnly": true, // Only emit .d.ts files, not JavaScript
         "types": ["node"], // Add this line if it's missing
         "moduleResolution": "node",
         "outDir": "./dist", // Output directory for JavaScript files

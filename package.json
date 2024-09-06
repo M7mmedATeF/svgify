@@ -1,12 +1,12 @@
 {
     "name": "@sumcode/svgify",
-    "private": true,
+    "private": false,
     "version": "0.0.1",
     "type": "module",
     "description": "A lightweight React component designed to dynamically render and style SVG icons.",
     "scripts": {
         "dev": "vite",
-        "build": "vite build && tsc --emitDeclarationOnly",
+        "build": "vite build && tsc",
         "lint": "eslint .",
         "preview": "vite preview"
     },
@@ -17,6 +17,11 @@
         "typescript",
         "svg manipulation"
     ],
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
     "author": "Mohammed Atef <mohammed.atef.ewais@gmail.com>",
     "license": "MIT",
     "repository": {

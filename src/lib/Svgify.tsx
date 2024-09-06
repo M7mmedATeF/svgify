@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import parse from "html-react-parser";
-import style_file from "./lib/Svgify.module.css";
-import { SvgifyProps } from "./lib/types";
+import { SvgifyProps } from "./types";
 
 /**
  *
@@ -24,22 +23,20 @@ const Svgify = ({
 }: SvgifyProps) => {
     // State to store the SVG content and selected font style
     const [svgContent, setSvgContent] = useState<string | null>(null);
-    const [fontStyle, setFontStyle] = useState(
-        style_file.svg_modifier_style_both
-    );
+    const [fontStyle, setFontStyle] = useState(`svg_modifier_style_both`);
 
     // Fetches and processes the SVG when the component mounts or props change
     useEffect(() => {
         // Update the font style based on the FontWeight prop
         switch (FontWeight) {
             case "fill":
-                setFontStyle(style_file.svg_modifier_style_fill);
+                setFontStyle(`svg_modifier_style_fill`);
                 break;
             case "stroke":
-                setFontStyle(style_file.svg_modifier_style_stroke);
+                setFontStyle(`svg_modifier_style_stroke`);
                 break;
             default:
-                setFontStyle(style_file.svg_modifier_style_both);
+                setFontStyle(`svg_modifier_style_both`);
                 break;
         }
 
@@ -94,7 +91,7 @@ const Svgify = ({
 
     return (
         <span
-            className={`svg-font-icon ${style_file.svg_modifier_style} ${fontStyle} ${className}`}
+            className={`svg-font-icon svg_modifier_style ${fontStyle} ${className}`}
             style={style}>
             {svgContent ? parse(svgContent) : "Loading..."}
         </span>
