@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "jsx": "react-jsx",
+        "declaration": true, // This generates type declarations for your package
+        "declarationDir": "./dist/types",
+        "emitDeclarationOnly": true,
+        "outDir": "./dist",
+        "types": ["node"], // Add this line if it's missing
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "strict": true
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
+}
