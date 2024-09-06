@@ -6,7 +6,7 @@
     "description": "A lightweight React component designed to dynamically render and style SVG icons.",
     "scripts": {
         "dev": "vite",
-        "build": "tsc -b && vite build",
+        "build": "vite build && tsc --emitDeclarationOnly",
         "lint": "eslint .",
         "preview": "vite preview"
     },
@@ -27,6 +27,10 @@
         "url": "https://github.com/M7mmedATeF/svgify/issues"
     },
     "homepage": "https://github.com/M7mmedATeF/svgify#readme",
+    "files": [
+        "dist",
+        "README.md"
+    ],
     "dependencies": {
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

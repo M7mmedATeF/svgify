@@ -3,12 +3,12 @@
         "target": "ESNext",
         "module": "ESNext",
         "jsx": "react-jsx",
-        "declaration": true, // This generates type declarations for your package
-        "declarationDir": "./dist/types",
-        "emitDeclarationOnly": true,
-        "outDir": "./dist",
+        "declaration": true, // Generate TypeScript declaration files
+        "declarationDir": "./dist/types", // Where to output the declarations
+        "emitDeclarationOnly": true, // Only emit .d.ts files, not JavaScript
         "types": ["node"], // Add this line if it's missing
         "moduleResolution": "node",
+        "outDir": "./dist", // Output directory for JavaScript files
         "esModuleInterop": true,
         "strict": true
     },

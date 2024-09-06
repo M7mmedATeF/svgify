@@ -1,4 +1,15 @@
-node_modules
-dist
-src
-.vscode
+# Exclude unnecessary files and folders
+node_modules/
+src/
+.git/
+.gitignore
+index.html
+package-lock.json
+vite.config.ts
+tsconfig.json
+.eslintrc.js
+.npmignore
+
+# Only include the dist folder and README.md
+!dist/
+!README.md
