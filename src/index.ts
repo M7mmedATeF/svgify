@@ -1,3 +1,3 @@
-import Svgify from "./lib/Svgify";
+import Svgify from "./Svgify";
 
 export default Svgify;

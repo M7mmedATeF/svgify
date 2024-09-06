@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import parse from "html-react-parser";
-import style_file from "./Svgify.module.css";
-import { SvgifyProps } from "./types";
+import style_file from "./lib/Svgify.module.css";
+import { SvgifyProps } from "./lib/types";
 
 /**
  *
@@ -95,7 +95,7 @@ const Svgify = ({
     return (
         <span
             className={`svg-font-icon ${style_file.svg_modifier_style} ${fontStyle} ${className}`}
-            style={style_file}>
+            style={style}>
             {svgContent ? parse(svgContent) : "Loading..."}
         </span>
     );
