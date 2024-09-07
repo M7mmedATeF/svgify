@@ -58,7 +58,7 @@ import Svgify from "@sumcode/svgify";
 function App() {
     return (
         <>
-            <Svgify IconName="YOUR_ICON_NAME" />
+            <Svgify IconName="YOUR_ICON_NAME" Scale={1.2} FontWeight="stroke" />
         </>
     );
 }
