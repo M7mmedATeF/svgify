@@ -10,11 +10,11 @@
     "exports": {
         ".": {
             "import": {
-                "types": "./dist/src/index.d.ts",
+                "types": "./dist/index.d.ts",
                 "default": "./dist/index.mjs"
             },
             "require": {
-                "types": "./dist/src/index.d.ts",
+                "types": "./dist/index.d.ts",
                 "default": "./dist/index.js"
             }
         },
