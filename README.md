@@ -1,6 +1,10 @@
-# Svgifire
+# Svgify
 
-`Svgifire` is a lightweight React component designed to dynamically render and style SVG icons. It fetches SVG files from the `public/assets/icons` directory, allowing you to easily integrate scalable vector graphics into your React application with customizable properties.
+<div style="text-align:center">
+<img src="https://res.cloudinary.com/dclbtusww/image/upload/v1725670993/Sumcode/Svgify/spkctkwkydsmnvki85di.png" alt="Svgify Logo" />
+</div>
+<br/>
+`Svgify` is a lightweight React component designed to dynamically render and style SVG icons. It fetches SVG files from the `public/assets/icons` directory, allowing you to easily integrate scalable vector graphics into your React application with customizable properties.
 
 ## Features
 
@@ -10,19 +14,25 @@
 
 ## Version
 
-![Beta Version](https://img.shields.io/badge/Beta_Version-0.0.1-red.svg)
+![Beta Version](https://img.shields.io/badge/Beta_Version-1.0.0-red.svg)
 
-The project is still in its beta version so some errors may occure or some icons may not accept the changes .. so please be help full and report us for any problems you find.
+The project is still in its beta version so some errors may occur or some icons may not accept the changes .. so please be helpful and report us for any problems you face.
 
 ## Installation
 
 Install the package via npm:
 
 ```
-npm install Svgifire
+npm install svgify
 ```
 
 Initiate folder structure:
+
+-   Add StyleSheet to your _`App.jsx`_ file.
+
+```js
+import "@sumcode/svgify/styles";
+```
 
 -   Make folder _`public/assets/icons`_.
 -   Download your _`icon.svg`_ in the folder.
@@ -36,7 +46,7 @@ import Svgify from "@sumcode/svgify";
 function App() {
     return (
         <>
-            <Svgify src="YOUR_ICON_NAME" />
+            <Svgify IconName="YOUR_ICON_NAME" />
         </>
     );
 }
