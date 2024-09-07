@@ -4,10 +4,27 @@
     "version": "0.0.2",
     "type": "module",
     "description": "A lightweight React component designed to dynamically render and style SVG icons.",
+    "main": "dist/index.umd.js",
+    "module": "dist/index.es.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.es.js",
+            "require": "./dist/index.umd.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./styles": "./dist/style.css"
+    },
+    "files": [
+        "/dist"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
     "scripts": {
         "dev": "vite",
-        "build": "vite build && tsc",
-        "lint": "eslint .",
+        "build": "tsc && vite build",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
     "keywords": [
@@ -17,30 +34,11 @@
         "typescript",
         "svg manipulation"
     ],
-    "main": "dist/index.js",
-    "types": "dist/types/index.d.ts",
-    "publishConfig": {
-        "access": "public"
-    },
-    "author": "Mohammed Atef <mohammed.atef.ewais@gmail.com>",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/M7mmedATeF/svgify.git"
-    },
-    "bugs": {
-        "url": "https://github.com/M7mmedATeF/svgify/issues"
-    },
-    "homepage": "https://github.com/M7mmedATeF/svgify#readme",
-    "files": [
-        "dist",
-        "README.md"
-    ],
     "dependencies": {
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
         "axios": "^1.7.5",
-        "html-react-parser": "^5.1.15"
+        "html-react-parser": "^5.1.15",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     },
     "devDependencies": {
         "@eslint/js": "^9.9.0",
@@ -54,6 +52,17 @@
         "globals": "^15.9.0",
         "typescript": "^5.5.3",
         "typescript-eslint": "^8.0.1",
-        "vite": "^5.4.1"
-    }
+        "vite": "^5.4.1",
+        "vite-plugin-dts": "^4.1.1"
+    },
+    "author": "Mohammed Atef <mohammed.atef.ewais@gmail.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/M7mmedATeF/svgify.git"
+    },
+    "bugs": {
+        "url": "https://github.com/M7mmedATeF/svgify/issues"
+    },
+    "homepage": "https://github.com/M7mmedATeF/svgify#readme"
 }

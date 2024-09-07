@@ -1,17 +1,23 @@
 {
     "compilerOptions": {
-        "target": "ESNext",
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
         "module": "ESNext",
+        "skipLibCheck": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
         "jsx": "react-jsx",
-        "declaration": true, // Generate TypeScript declaration files
-        "declarationDir": "./dist/types", // Where to output the declarations
-        // "emitDeclarationOnly": true, // Only emit .d.ts files, not JavaScript
-        "types": ["node"], // Add this line if it's missing
-        "moduleResolution": "node",
-        "outDir": "./dist", // Output directory for JavaScript files
-        "esModuleInterop": true,
-        "strict": true
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleDetection": "force",
+        "typeRoots": ["./dist/index.d.ts", "node_modules/@types"]
     },
-    "include": ["src"],
-    "exclude": ["node_modules", "dist"]
+    /* include /index.ts*/
+    "include": ["src", "./index.ts"]
 }
