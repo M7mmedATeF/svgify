@@ -10,7 +10,7 @@ export default defineConfig({
             name: "index",
             // Generates different file names based on the format
             fileName: (format) => {
-                if (format === "es") return "index.es.js";
+                if (format === "es") return "index.mjs"; // Use .mjs for ES modules
                 if (format === "cjs") return "index.cjs";
                 if (format === "umd") return "index.umd.js";
                 return "index.js"; // Default fallback to .js for iife or other formats
@@ -35,7 +35,7 @@ export default defineConfig({
         react(),
         dts({
             outDir: "dist/types", // Specifies the output directory for the .d.ts files
-            entryRoot: "src", // Makes sure src/ is not reflected in the output structure
+            entryRoot: "src", // Ensures src/ is not reflected in the output structure
         }),
     ],
 });
