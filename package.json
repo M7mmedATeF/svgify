@@ -4,24 +4,21 @@
     "version": "1.0.1",
     "type": "module",
     "description": "A lightweight React component designed to dynamically render and style SVG icons.",
-    "main": "./dist/index",
-    "module": "./dist/index.es.js",
-    "types": "./dist/index.d.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/types/index.d.ts",
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.mjs"
-            },
-            "require": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            }
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.cjs",
+            "types": "./dist/types/index.d.ts"
         },
         "./styles": "./dist/style.css"
     },
     "files": [
-        "/dist"
+        "dist",
+        "README.md",
+        "LICENSE"
     ],
     "publishConfig": {
         "access": "public"

@@ -5,15 +5,17 @@ import dts from "vite-plugin-dts";
 
 export default defineConfig({
     build: {
-        //Specifies that the output of the build will be a library.
         lib: {
-            //Defines the entry point for the library build. It resolves
-            //to src/index.ts,indicating that the library starts from this file.
             entry: path.resolve(__dirname, "src/index.ts"),
-            name: "svgify",
-            //A function that generates the output file
-            //name for different formats during the build
-            fileName: "svgify",
+            name: "index",
+            // Generates different file names based on the format
+            fileName: (format) => {
+                if (format === "es") return "index.es.js";
+                if (format === "cjs") return "index.cjs";
+                if (format === "umd") return "index.umd.js";
+                return "index.js"; // Default fallback to .js for iife or other formats
+            },
+            formats: ["es", "cjs", "umd", "iife"], // Multiple formats
         },
         rollupOptions: {
             external: ["react", "react-dom"],
@@ -24,14 +26,16 @@ export default defineConfig({
                 },
             },
         },
-        //Generates sourcemaps for the built files,
-        //aiding in debugging.
         sourcemap: true,
-        //Clears the output directory before building.
+        cssMinify: true,
+        minify: true,
         emptyOutDir: true,
     },
-    //react() enables React support.
-    //dts() generates TypeScript declaration files (*.d.ts)
-    //during the build.
-    plugins: [react(), dts()],
+    plugins: [
+        react(),
+        dts({
+            outDir: "dist/types", // Specifies the output directory for the .d.ts files
+            entryRoot: "src", // Makes sure src/ is not reflected in the output structure
+        }),
+    ],
 });

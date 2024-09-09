@@ -26,6 +26,6 @@
         "typeRoots": ["./dist/index.d.ts", "node_modules/@types"]
     },
     /* include /index.ts*/
-    "include": ["src", "./index.ts"]
-    // "references": [{ "path": "./tsconfig.node.json" }]
+    "include": ["src", "./index.ts"],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }
