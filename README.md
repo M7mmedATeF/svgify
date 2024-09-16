@@ -68,14 +68,18 @@ export default App;
 
 ## Parameters
 
-| Parameter    | Type                   | Initial value | Usage                                                           |
-| :----------- | :--------------------- | :------------ | :-------------------------------------------------------------- |
-| `IconName`   | `string`\*             | `""`          | The name of the icon in the mentiond path without its extention |
-| `FontWeight` | `string`?              | `both`        | Speifies the type of the icon `"stroke"` , `"fill"` , `"both"`  |
-| `Scale`      | `float`?               | `1`           | The factor to be multiplied by the styled `font-size`           |
-| `className`  | `string`?              | `""`          | Custom classname to be passed to the `span` element             |
-| `style`      | `React.CSSProperties`? | `{}`          | An inline styles for the component                              |
+| Parameter         | Type                     | Initial value | Usage                                                            |
+| :---------------- | :----------------------- | :------------ | :--------------------------------------------------------------- |
+| `IconName`        | `string`\*               | `""`          | The name of the icon in the mentioned path without its extension |
+| `FontWeight`      | `string`?                | `fill`        | Specifies the type of the icon `"stroke"` , `"fill"` , `"both"`  |
+| `Scale`           | `float`?                 | `1`           | The factor to be multiplied by the styled `font-size`            |
+| `className`       | `string`?                | `""`          | Custom ClassName to be passed to the `span` element              |
+| `style`           | `React.CSSProperties`?   | `{}`          | An inline styles for the component                               |
+| `LoadingElement`  | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed while fetching the svg       |
+| `NotFoundElement` | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed on fetch error               |
 
 ## Author
 
--   [@Mohammed Atef](https://github.com/M7mmedATeF)
+-   Mohammed Atef
+    -   [LinkedIn](https://www.linkedin.com/in/m7mmed3atef/)
+    -   [Github](https://github.com/M7mmedATeF)

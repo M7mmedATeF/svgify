@@ -5,4 +5,6 @@ export interface SvgifyProps {
     className?: string; // Additional CSS classes for styling
     style?: React.CSSProperties; // An inline styles for the component
     FontWeight?: "both" | "fill" | "stroke"; // Style preference for the icon: fill, stroke, or both (default is both)
+    LoadingElement?: "" | React.ReactNode;
+    NotFoundElement?: "" | React.ReactNode;
 }

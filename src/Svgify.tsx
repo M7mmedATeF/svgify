@@ -10,6 +10,8 @@ import { SvgifyProps } from "./types";
  * @param Scale The scale factor of the icon width and height (default is 0.7)
  * @param className The custom CSS class to modify the svg icon
  * @param style // An inline styles for the component
+ * @param LoadingElement // The text or element to be displayed while fetching the svg
+ * @param NotFoundElement // The text or element to be displayed on fetch error
  * @author Mohammed Atef
  * @returns span that includes svg icon as SVG element
  */
@@ -18,7 +20,9 @@ const Svgify = ({
     IconName = "",
     className = "",
     Scale = 1,
-    FontWeight = "both",
+    FontWeight = "fill",
+    LoadingElement = "",
+    NotFoundElement = "",
     style = {},
 }: SvgifyProps) => {
     // State to store the SVG content and selected font style
@@ -43,13 +47,23 @@ const Svgify = ({
         // Fetch and process the SVG file
         const fetchSvg = async () => {
             try {
-                const path = `/assets/icons/${IconName}.svg`;
-                const response = await axios.get(path);
-                let svg = response.data;
+                let svg = localStorage.getItem(`svgify_${IconName}`) || "";
 
-                // Remove inline fill and stroke styles from the SVG
-                svg = svg.replaceAll(/fill="[^"]*"/g, "");
-                svg = svg.replaceAll(/stroke="[^"]*"/g, "");
+                if (!svg) {
+                    const path = `/assets/icons/${IconName}.svg`;
+                    const response = await axios.get(path);
+                    svg = response.data;
+
+                    if (svg.match(/<html/g)) {
+                        throw new Error("Invalid SVG format");
+                    }
+
+                    // Remove inline fill and stroke styles from the SVG
+                    svg = svg.replace(/fill="[^"]*"/g, "");
+                    svg = svg.replace(/stroke="[^"]*"/g, "");
+
+                    localStorage.setItem(`svgify_${IconName}`, svg);
+                }
 
                 // Calculate the aspect ratio to maintain the icon's proportions
                 const widthMatch = svg.match(
@@ -78,10 +92,10 @@ const Svgify = ({
                     `height="${Scale * 1.5 * aspectRatio}em"`
                 );
                 svg = svg.replace(/width="[^"]*"/, `width="${Scale * 1.5}em"`);
-
                 // Update the state with the processed SVG content
                 setSvgContent(svg);
             } catch (error) {
+                setSvgContent("SVGIFY_ERROR");
                 console.error("Error fetching SVG:", error);
             }
         };
@@ -91,9 +105,15 @@ const Svgify = ({
 
     return (
         <span
-            className={`svg-font-icon svg_modifier_style ${fontStyle} ${className}`}
+            className={`svg-font-icon svg_modifier_style ${fontStyle} ${
+                className || ""
+            }`}
             style={style}>
-            {svgContent ? parse(svgContent) : "Loading..."}
+            {svgContent
+                ? svgContent === "SVGIFY_ERROR"
+                    ? NotFoundElement
+                    : parse(svgContent)
+                : LoadingElement}
         </span>
     );
 };
