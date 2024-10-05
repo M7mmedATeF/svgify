@@ -11,6 +11,7 @@
 -   **Dynamic SVG Rendering:** Fetches and displays SVG icons based on the provided `IconName`.
 -   **Customizable Styling:** Supports inline styles, CSS classes, and different font weights (fill, stroke, or both).
 -   **Scalable Icons:** Adjust the size of your icons with the `Scale` factor that will be multiplied by css `font-size` property.
+-   **Icons Caching:** Icons is being cached in `localstorage` for better performance.
 
 ##
 
@@ -27,9 +28,12 @@ The project is still in its beta version so some errors may occur or some icons 
 
 ## Updates
 
--   Fix issues in fetching data and handle 404NotFound SVGs errors
--   Apply SVG Caching to save time and memory leak issues
--   Add two new properties `LoadingElement | NotFoundElement` to handle previewed states.
+-   **Fix caching issues by provide icons version controlling through context provider**.
+    -   All you need is to change current version through your provider and cached icons will change.
+
+## Testing
+
+For Exhaustive [click here](https://svgify-exhaustive.netlify.app/)
 
 ## Installation
 
@@ -79,6 +83,30 @@ function App() {
 export default App;
 ```
 
+## For version controlling (optional)
+
+```js
+import React from "react";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import { Svgifier } from "@sumcode/svgify";
+
+createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+        {/* Add Svgify Provider around your routes */}
+        <Svgifier version={1} clearForOldVersion>
+            <App />
+        </Svgifier>
+    </StrictMode>
+);
+```
+
+| Parameter            | Type       | Initial value | Usage                                                                                                                                         |
+| :------------------- | :--------- | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `version`            | `Number`\* | `1`           | Your current icon's version `should be different from the old one`                                                                            |
+| `clearForOldVersion` | `Boolean`? | `false`       | needs to be activated for upgrading from versions older than `2.0.0` <br/> _`(recommended to be disabled if starting with version >= 2.0.0)`_ |
+
 ## Parameters
 
 | Parameter         | Type                     | Initial value | Usage                                                            |
@@ -87,7 +115,6 @@ export default App;
 | `FontWeight`      | `string`?                | `fill`        | Specifies the type of the icon `"stroke"` , `"fill"` , `"both"`  |
 | `Scale`           | `float`?                 | `1`           | The factor to be multiplied by the styled `font-size`            |
 | `className`       | `string`?                | `""`          | Custom ClassName to be passed to the `span` element              |
-| `style`           | `React.CSSProperties`?   | `{}`          | An inline styles for the component                               |
 | `LoadingElement`  | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed while fetching the svg       |
 | `NotFoundElement` | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed on fetch error               |
 

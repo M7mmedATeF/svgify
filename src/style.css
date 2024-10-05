@@ -1,3 +1,7 @@
+.svg-font-icon {
+    display: inline-block;
+}
+
 .svg_modifier_style {
     fill: currentColor;
     stroke: currentColor;

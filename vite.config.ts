@@ -30,6 +30,7 @@ export default defineConfig({
         cssMinify: true,
         minify: true,
         emptyOutDir: true,
+        cssCodeSplit: true,
     },
     plugins: [
         react(),

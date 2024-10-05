@@ -13,8 +13,13 @@
             "require": "./dist/index.cjs",
             "types": "./dist/types/index.d.ts"
         },
-        "./styles": "./dist/style.css",
-        "./type": "./dist/types/types.d.ts"
+        "./styles": "./dist/index.css",
+        "./type": "./dist/types/types.d.ts",
+        "./SvgifyContext": {
+            "import": "./dist/SvgifyContext.mjs",
+            "require": "./dist/SvgifyContext.cjs",
+            "types": "./dist/types/SvgifyContext.d.ts"
+        }
     },
     "files": [
         "dist",
