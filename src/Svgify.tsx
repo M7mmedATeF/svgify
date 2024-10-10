@@ -33,8 +33,20 @@ const Svgify: React.FC<SvgifyProps> = ({
         const cachedVersion =
             Number(localStorage.getItem("svgify_cached_version")) || -1;
 
-        if (cachedVersion !== version) {
-            localStorage.removeItem(`svgify_${version}_${IconName}`);
+        if (cachedVersion != version) {
+            localStorage.setItem(
+                "svgify_cached_version",
+                JSON.stringify(version)
+            );
+
+            for (const key of Object.keys(localStorage)) {
+                if (
+                    key.startsWith(`svgify_`) &&
+                    !key.includes(`${version}`) &&
+                    key !== "svgify_cached_version"
+                )
+                    localStorage.removeItem(key);
+            }
             if (clearForOldVersion)
                 localStorage.removeItem(`svgify_${IconName}`);
         }
