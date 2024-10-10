@@ -1,12 +1,12 @@
 # Svgify
 
-<div style="display:flex; justify-content:center; margin-inline: auto; margin-block: 3rem 1rem; width: clamp(250px, 40%, 500px);">
+<div style="display:flex; justify-content:center; margin-inline: auto; margin-block: 3rem 1rem; width: 100%;">
 <img src="https://res.cloudinary.com/dclbtusww/image/upload/v1725670993/Sumcode/Svgify/spkctkwkydsmnvki85di.png" alt="Svgify Logo" style="width: 100%; object-fit: contain;" />
 </div>
 <br/>
 `Svgify` is a lightweight React component designed to dynamically render and style SVG icons. It fetches SVG files from the `public/assets/icons` directory, allowing you to easily integrate scalable vector graphics into your React application with customizable properties.
 
-## Features
+## 1. Features
 
 -   **Dynamic SVG Rendering:** Fetches and displays SVG icons based on the provided `IconName`.
 -   **Customizable Styling:** Supports inline styles, CSS classes, and different font weights (fill, stroke, or both).
@@ -26,16 +26,19 @@
 
 The project is still in its beta version so some errors may occur or some icons may not accept the changes .. so please be helpful and report us for any problems you face.
 
-## Updates
+## 2. Updates
 
--   **Fix caching issues by provide icons version controlling through context provider**.
-    -   All you need is to change current version through your provider and cached icons will change.
+1.  Fix caching issues `override existing data in cache`.
+2.  Control icon saving path
+3.  Now you can customize fetching method
+4.  Handle multiple fetching for same icon
+5.  Exhaustive testing of 10K icon randomly generated from 70 icon is now available in (sec 3.0)
 
-## Testing
+## 3. Testing
 
-For Exhaustive [click here](https://svgify-exhaustive.netlify.app/)
+For Exhaustive 10K icon is being randomly generated from 70 icon [click here](https://svgify-exhaustive.netlify.app/)
 
-## Installation
+## 4. Basic Installation
 
 Install the package via npm:
 
@@ -66,7 +69,7 @@ Initiate folder structure:
         └── app.jsx (Add stylesheet here)
 ```
 
-## Example
+## 5. Example
 
 ```js
 import "./App.css";
@@ -83,7 +86,7 @@ function App() {
 export default App;
 ```
 
-## For version controlling (optional)
+## 6. For version controlling ( optional - recommended for icon changing with the same name )
 
 ```js
 import React from "react";
@@ -102,12 +105,48 @@ createRoot(document.getElementById("root")!).render(
 );
 ```
 
-| Parameter            | Type       | Initial value | Usage                                                                                                                                         |
-| :------------------- | :--------- | :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `version`            | `Number`\* | `1`           | Your current icon's version `should be different from the old one`                                                                            |
-| `clearForOldVersion` | `Boolean`? | `false`       | needs to be activated for upgrading from versions older than `2.0.0` <br/> _`(recommended to be disabled if starting with version >= 2.0.0)`_ |
+| Parameter            | Type                                                               | Initial value          | Usage                                                                                                                                         |
+| :------------------- | :----------------------------------------------------------------- | :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `version`            | `Number`\*                                                         | `1`                    | Your current icon's version `should be different from the old one`                                                                            |
+| `clearForOldVersion` | `Boolean`?                                                         | `false`                | needs to be activated for upgrading from versions older than `2.0.0` <br/> _`(recommended to be disabled if starting with version >= 2.0.0)`_ |
+| `base_path`          | `string`?                                                          | `/assets/icons/`       | Path of icon's folder starting from public folder                                                                                             |
+| `FetchIcon`          | `(Icon_Path: string) => Promise<AxiosResponse<unknown, unknown>>`? | `axios.get(Icon_Path)` | Custom function to fetch the icon (Head to section 7.0 for example)                                                                           |
 
-## Parameters
+## 7. Custom fetching function
+
+```javascript
+    import React from "react";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App.tsx";
+import "./index.css";
+import "@sumcode/svgify/styles";
+import { Svgifier } from "@sumcode/svgify";
+import axios from "axios";
+
+/*
+ * for this example:
+ *      icon_path = "/assets/iconization/YOUR_ICON_NAME"
+ */
+const FetchIcon = async (icon_path: string) => {
+    return axios.get(`http://YOUR_SERVER_PUBLIC_URI.com/${icon_path}`);
+};
+
+createRoot(document.getElementById("root")!).render(
+    <StrictMode>
+        <Svgifier
+            base_path="/assets/iconization" // Changing public icon folder path
+            version={2}
+            FetchIcon={FetchIcon}
+            clearForOldVersion>
+            <App />
+        </Svgifier>
+    </StrictMode>
+);
+
+```
+
+## 7. Parameters
 
 | Parameter         | Type                     | Initial value | Usage                                                            |
 | :---------------- | :----------------------- | :------------ | :--------------------------------------------------------------- |
@@ -118,7 +157,7 @@ createRoot(document.getElementById("root")!).render(
 | `LoadingElement`  | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed while fetching the svg       |
 | `NotFoundElement` | `"" \| React.ReactNode`? | `""`          | The text or element to be displayed on fetch error               |
 
-## Author
+## 8. Author
 
 <p style="margin-bottom: 5px">Mohammed Atef</p>
 

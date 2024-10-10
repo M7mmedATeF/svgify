@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import parse from "html-react-parser";
 import { SvgifyProps } from "./types";
 import { useSvgifyContext } from "./SvgifyContext";
@@ -27,118 +26,131 @@ const Svgify: React.FC<SvgifyProps> = ({
 }) => {
     const [svgContent, setSvgContent] = useState<string | null>(null);
     const [fontStyle, setFontStyle] = useState(`svg_modifier_style_both`);
-    const { version, clearForOldVersion } = useSvgifyContext();
+    const { version, clearForOldVersion, FetchIcon } = useSvgifyContext();
+    const [fetched, setFetched] = useState<boolean>(false);
 
     useEffect(() => {
-        const cachedVersion =
-            Number(localStorage.getItem("svgify_cached_version")) || -1;
+        if (!fetched) {
+            const cachedVersion =
+                Number(localStorage.getItem("svgify_cached_version")) || -1;
 
-        if (cachedVersion != version) {
-            localStorage.setItem(
-                "svgify_cached_version",
-                JSON.stringify(version)
-            );
+            if (cachedVersion != version) {
+                localStorage.setItem(
+                    "svgify_cached_version",
+                    JSON.stringify(version)
+                );
 
-            for (const key of Object.keys(localStorage)) {
-                if (
-                    key.startsWith(`svgify_`) &&
-                    !key.includes(`${version}`) &&
-                    key !== "svgify_cached_version"
-                )
-                    localStorage.removeItem(key);
+                for (const key of Object.keys(localStorage)) {
+                    if (
+                        key.startsWith(`svgify_`) &&
+                        !key.includes(`${version}`) &&
+                        key !== "svgify_cached_version"
+                    )
+                        localStorage.removeItem(key);
+                }
+                if (clearForOldVersion)
+                    localStorage.removeItem(`svgify_${IconName}`);
             }
-            if (clearForOldVersion)
-                localStorage.removeItem(`svgify_${IconName}`);
-        }
 
-        // Update font style based on FontWeight prop
-        switch (FontWeight) {
-            case "fill":
-                setFontStyle(`svg_modifier_style_fill`);
-                break;
-            case "stroke":
-                setFontStyle(`svg_modifier_style_stroke`);
-                break;
-            default:
-                setFontStyle(`svg_modifier_style_both`);
-                break;
-        }
+            // Update font style based on FontWeight prop
+            switch (FontWeight) {
+                case "fill":
+                    setFontStyle(`svg_modifier_style_fill`);
+                    break;
+                case "stroke":
+                    setFontStyle(`svg_modifier_style_stroke`);
+                    break;
+                default:
+                    setFontStyle(`svg_modifier_style_both`);
+                    break;
+            }
 
-        const fetchSvg = async () => {
-            try {
-                let svg =
-                    localStorage.getItem(`svgify_${version}_${IconName}`) || "";
+            const fetchSvg = async () => {
+                try {
+                    let svg =
+                        localStorage.getItem(`svgify_${version}_${IconName}`) ||
+                        "";
 
-                if (!svg) {
-                    const path = `/assets/icons/${IconName}.svg`;
-                    const response = await axios.get(path);
-                    svg = response.data;
+                    if (!svg && FetchIcon) {
+                        const response = await FetchIcon(IconName);
 
-                    if (svg.match(/<html/g)) {
-                        throw new Error("Invalid SVG format");
-                    }
+                        if (response?.data) {
+                            svg = "" + response.data;
 
-                    // Remove inline fill and stroke styles
-                    svg = svg
-                        .replace(/fill="[^"]*"/g, "")
-                        .replace(/stroke="[^"]*"/g, "");
+                            if (svg.match(/<html/g)) {
+                                throw new Error("Invalid SVG format");
+                            }
 
-                    // Try to store the SVG in localStorage and handle storage quota
-                    try {
-                        localStorage.setItem(
-                            `svgify_${version}_${IconName}`,
-                            JSON.stringify(svg)
-                        );
-                    } catch (e) {
-                        if (e instanceof DOMException && e.code === 22) {
-                            console.warn(
-                                "Storage quota exceeded, clearing storage..."
-                            );
-                            localStorage.clear(); // Optional: refine this to remove specific items
-                        } else {
-                            throw e; // If it's not a quota error, rethrow it
+                            // Remove inline fill and stroke styles
+                            svg = svg
+                                .replace(/fill="[^"]*"/g, "")
+                                .replace(/stroke="[^"]*"/g, "");
+
+                            // Try to store the SVG in localStorage and handle storage quota
+                            try {
+                                localStorage.setItem(
+                                    `svgify_${version}_${IconName}`,
+                                    JSON.stringify(svg)
+                                );
+                            } catch (e) {
+                                if (
+                                    e instanceof DOMException &&
+                                    e.code === 22
+                                ) {
+                                    console.warn(
+                                        "Storage quota exceeded, clearing storage..."
+                                    );
+                                    localStorage.clear(); // Optional: refine this to remove specific items
+                                } else {
+                                    throw e; // If it's not a quota error, rethrow it
+                                }
+                            }
                         }
+                    } else {
+                        svg = JSON.parse(svg);
                     }
-                } else {
-                    svg = JSON.parse(svg);
+
+                    // Calculate aspect ratio
+                    const widthMatch = svg.match(
+                        /width="(\d+(\.\d+)?(px|em|rem|%)?)"/
+                    );
+                    const heightMatch = svg.match(
+                        /height="(\d+(\.\d+)?(px|em|rem|%)?)"/
+                    );
+                    let aspectRatio = 1;
+
+                    if (widthMatch && heightMatch) {
+                        const originalWidth = parseFloat(widthMatch[1]);
+                        const originalHeight = parseFloat(heightMatch[1]);
+                        aspectRatio = originalHeight / originalWidth;
+                    } else {
+                        // Add default width and height if missing
+                        if (!widthMatch)
+                            svg = svg.replace("<svg", `<svg width="1em"`);
+                        if (!heightMatch)
+                            svg = svg.replace("<svg", `<svg height="1em"`);
+                    }
+
+                    // Adjust dimensions based on Scale prop
+                    svg = svg.replace(
+                        /height="[^"]*"/,
+                        `height="${Scale * 1.5 * aspectRatio}em"`
+                    );
+                    svg = svg.replace(
+                        /width="[^"]*"/,
+                        `width="${Scale * 1.5}em"`
+                    );
+
+                    setFetched(true);
+                    setSvgContent(svg);
+                } catch (error) {
+                    setSvgContent("SVGIFY_ERROR");
+                    console.error("Error fetching SVG:", error);
                 }
+            };
 
-                // Calculate aspect ratio
-                const widthMatch = svg.match(
-                    /width="(\d+(\.\d+)?(px|em|rem|%)?)"/
-                );
-                const heightMatch = svg.match(
-                    /height="(\d+(\.\d+)?(px|em|rem|%)?)"/
-                );
-                let aspectRatio = 1;
-
-                if (widthMatch && heightMatch) {
-                    const originalWidth = parseFloat(widthMatch[1]);
-                    const originalHeight = parseFloat(heightMatch[1]);
-                    aspectRatio = originalHeight / originalWidth;
-                } else {
-                    // Add default width and height if missing
-                    if (!widthMatch)
-                        svg = svg.replace("<svg", `<svg width="1em"`);
-                    if (!heightMatch)
-                        svg = svg.replace("<svg", `<svg height="1em"`);
-                }
-
-                // Adjust dimensions based on Scale prop
-                svg = svg.replace(
-                    /height="[^"]*"/,
-                    `height="${Scale * 1.5 * aspectRatio}em"`
-                );
-                svg = svg.replace(/width="[^"]*"/, `width="${Scale * 1.5}em"`);
-
-                setSvgContent(svg);
-            } catch (error) {
-                setSvgContent("SVGIFY_ERROR");
-                console.error("Error fetching SVG:", error);
-            }
-        };
-
-        fetchSvg();
+            fetchSvg();
+        }
     }, [IconName, Scale, FontWeight, version, clearForOldVersion]);
 
     return (
